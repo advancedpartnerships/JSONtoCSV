@@ -1,0 +1,21 @@
+import java.io.PrintStream;
+import org.json.CDL;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+public class BeanToCsv
+{
+  public static void main(String[] args) throws JSONException
+  {
+    String url = "";
+    if ((args.length > 0) && (args[0] != null) && (!args[0].equals(""))) {
+      url = args[0];
+    } else {
+      url = "https://graph.facebook.com/search?fields=id,name,were_here_count,talking_about_count,likes&limit=100&q=sweetfrog&type=page";
+    } 
+    Reader reader = new Reader(url);
+    JSONArray array = reader.getJSONObject().getJSONArray("data");
+    String csv = CDL.toString(array);
+    System.out.println(csv);
+  } 
+} 
