@@ -1,0 +1,45 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.Charset;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
+
+public class Reader
+{
+  private JSONObject json;
+  
+  public JSONObject getJSONObject() { return this.json; } 
+  public Reader(String url) {
+    try {
+      this.json = readJsonFromUrl(url);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (JSONException e) {
+      e.printStackTrace();
+    } 
+  } 
+  private String readAll(BufferedReader rd) throws IOException {
+    StringBuilder sb = new StringBuilder();
+    int cp;
+    while ((cp = rd.read()) != -1) { int cp;
+      sb.append((char)cp);
+    } 
+    return sb.toString();
+  } 
+  
+  public JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+    InputStream is = new URL(url).openStream();
+    try {
+      BufferedReader rd = new BufferedReader(new java.io.InputStreamReader(is, Charset.forName("UTF-8")));
+      String jsonText = readAll(rd);
+      JSONObject json = new JSONObject(jsonText);
+      return json;
+    } finally {
+      is.close();
+    } 
+  } 
+} 
